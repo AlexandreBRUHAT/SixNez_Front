@@ -1,6 +1,6 @@
 <template>
     <div id="navbar" class="page-container md-layout-column">
-        <md-app-toolbar class="md-primary">
+        <md-toolbar class="md-primary">
             <div class="md-toolbar-row">
                 <div class="md-toolbar-section-start">
                     <span class="md-title">Six Nez</span>
@@ -21,7 +21,7 @@
                     <md-tab id="tab-favorites" md-label="Favorites"></md-tab>
                 </md-tabs>
             </div>
-        </md-app-toolbar>
+        </md-toolbar>
     </div>
 </template>
 
