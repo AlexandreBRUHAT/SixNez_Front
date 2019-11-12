@@ -1,17 +1,19 @@
-$color-main: #F29202;
-$color-scnd: #100007;
-$color-thrd: #FFFFFA;
-$color-qrtr: #F7C375;
+$color-primary: #f29202;
+$color-secondary: #f7c375;
+$color-white: #fffffa;
+$color-black: #100007;
 
 @import "~vue-material/dist/theme/engine";
 
 @include md-register-theme("default", (
-        primary: $color-main,
-        accent: $color-scnd,
-        background: $color-main,
-        toolbarvariant: $color-main,
-        text-primary-on-background-variant: $color-main
+        primary: $color-primary,
+        accent: $color-secondary,
+        background: $color-white,
+        toolbarvariant: $color-secondary,
+        text-primary-on-background-variant: $color-secondary
 ));
 
 @import "~vue-material/dist/theme/all";
 @import "~vue-material/dist/theme/default.css";
+
+
