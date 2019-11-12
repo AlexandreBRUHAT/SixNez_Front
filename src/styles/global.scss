@@ -1,0 +1,17 @@
+$color-main: #F29202;
+$color-scnd: #100007;
+$color-thrd: #FFFFFA;
+$color-qrtr: #F7C375;
+
+@import "~vue-material/dist/theme/engine";
+
+@include md-register-theme("default", (
+        primary: $color-main,
+        accent: $color-scnd,
+        background: $color-main,
+        toolbarvariant: $color-main,
+        text-primary-on-background-variant: $color-main
+));
+
+@import "~vue-material/dist/theme/all";
+@import "~vue-material/dist/theme/default.css";
