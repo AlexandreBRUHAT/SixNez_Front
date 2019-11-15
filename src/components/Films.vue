@@ -1,13 +1,110 @@
 <template>
-    <div></div>
+    <div>
+        <div id="div_filters">
+            <md-button class="filter_button">
+                <md-content class="md-primary filter_button_content">Filtre1</md-content>
+            </md-button>
+
+            <md-button class="filter_button">
+                <md-content class="md-primary filter_button_content">Filtre2</md-content>
+            </md-button>
+
+            <md-button class="filter_button">
+                <md-content class="md-primary filter_button_content">Filtre3</md-content>
+            </md-button>
+        </div>
+
+        <div id="div_containing_cards">
+            <md-card md-with-hover v-for="film in films" v-bind:key="film.titre" class="div_card">
+                <md-card-header class="div_card_header">
+                    <div class="md-title div_titre">{{ film.titre }}</div>
+                    <div class="md-subhead div_annee">{{ film.annee }}</div>
+                </md-card-header>
+            </md-card>
+        </div>
+    </div>
 </template>
 
 <script>
     export default {
-        name: "Films"
+        name: "Films",
+        data: () => ({
+            films: [{ titre: "aa", annee: 2001}, {titre: "bb", annee: 2015},{ titre: "aa", annee: 2001}, {titre: "bb", annee: 2015},{ titre: "aa", annee: 2001}, {titre: "bb", annee: 2015},{ titre: "aa", annee: 2001}, {titre: "bb", annee: 2015},{ titre: "aa", annee: 2001}, {titre: "bb", annee: 2015}]
+        })
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
+    @import "../styles/global";
 
+    #div_filters {
+        width: 100%;
+        background: fade_out($color-primary, 0.2);
+
+        border-bottom-width: 10px;
+        border-bottom-style: solid;
+        border-bottom-color: $color-primary;
+
+        position: sticky;
+        margin-top: 0%;
+
+        padding-top: 10px;
+        padding-bottom: 10px;
+        padding-left: 5%;
+        padding-right: 5%;
+        text-align: center;
+    }
+
+    .filter_button {
+        width: 16%;
+        margin-left: 5%;
+        margin-right: 5%;
+    }
+
+    .filter_button_content {
+        background: none !important;
+    }
+
+    #div_containing_cards {
+        padding-top: 1%;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
+    }
+
+    .div_card {
+        width: 15%;
+        padding-top: 10%;
+
+        position: relative;
+
+        margin-left: 5%;
+        margin-right: 5%;
+        margin-bottom: 5%;
+
+        display: inline-block;
+
+        border-color: fade_out($color-primary, 0.8);
+        border-style: inset;
+        border-width: 4px;
+    }
+
+    .div_card_header {
+
+    }
+
+    .div_card:hover {
+
+        /*border-left-color: $color-primary;
+        border-right-color: $color-primary;
+        border-left-style: solid;
+        border-right-style: solid;
+        border-left-width: 1px;
+        border-right-width: 1px;*/
+
+        border-color: fade_out($color-primary, 0.2);
+    }
+
+    .div_titre, .div_annee {
+        text-align: center;
+    }
 </style>

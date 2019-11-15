@@ -50,6 +50,12 @@
     }
 </script>
 
-<style scoped>
+<style scoped lang="scss">
     @import "../styles/navbar.scss";
+
+    #navbar {
+        position: sticky;
+        top: 0px;
+        z-index: 1000;
+    }
 </style>

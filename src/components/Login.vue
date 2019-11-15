@@ -11,9 +11,8 @@
                 Identifiant
             </md-content>
 
-
             <md-field id="field_identifiant" class="md-theme-default">
-                <md-input id="input_identifiant" type="text" />
+                <md-input v-model="identifiant" id="input_identifiant" type="text" required />
             </md-field>
 
             <md-content id="content_password" class="md-title md-primary">
@@ -21,7 +20,7 @@
             </md-content>
 
             <md-field id="field_password">
-                <md-input id="input_password" type="password" class="md-primary" />
+                <md-input id="input_password" type="password" class="md-primary" required />
             </md-field>
         </div>
 
@@ -30,7 +29,7 @@
                 <md-content class="md-primary">Se connecter</md-content>
             </md-button>
 
-            <md-button id="button_creer" class="md-primary">
+            <md-button id="button_creer" v-on:click="$router.push('/register')">
                 <md-content class="md-primary">Créer un compte</md-content>
             </md-button>
         </div>
@@ -39,7 +38,18 @@
 
 <script>
     export default {
-        name: "Login"
+        name: "Login",
+        data: () => ({
+            hasErrors: false,
+            identifiant: null
+        }),
+        computed: {
+            hasErrorsClass () {
+                return {
+                    'md-invalid': this.hasErrors
+                }
+            }
+        }
     }
 </script>
 
