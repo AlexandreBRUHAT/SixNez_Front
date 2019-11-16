@@ -61,7 +61,7 @@
         margin-right: 5%;
     }
 
-    .filter_button_content {
+    .md-primary {
         background: none !important;
     }
 

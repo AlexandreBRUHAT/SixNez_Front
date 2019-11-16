@@ -5,9 +5,10 @@ import Films from "./components/Films";
 import Acteurs from "./components/Acteurs";
 
 export default [
-    { path: '/', component: Home},
+    { path: '/', redirect: '/home' },
+    { path: '/home', component: Home},
     { path: '/login', component: Login},
     { path: '/register', component: Register},
-    { path: '/films', component: Films},
-    { path: '/acteurs', component: Acteurs}
+    { path: '/films', alias: '/films/*', component: Films},
+    { path: '/acteurs', alias: '/acteurs/*', component: Acteurs}
 ]

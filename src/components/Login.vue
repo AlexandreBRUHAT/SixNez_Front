@@ -20,16 +20,16 @@
             </md-content>
 
             <md-field id="field_password">
-                <md-input id="input_password" type="password" class="md-primary" required />
+                <md-input v-model="password" id="input_password" type="password" class="md-primary" required />
             </md-field>
         </div>
 
         <div id="div_buttons">
-            <md-button id="button_valider">
+            <md-button id="button_valider" @click="validate">
                 <md-content class="md-primary">Se connecter</md-content>
             </md-button>
 
-            <md-button id="button_creer" v-on:click="$router.push('/register')">
+            <md-button id="button_creer" @click="$router.push('/register')">
                 <md-content class="md-primary">Créer un compte</md-content>
             </md-button>
         </div>
@@ -37,16 +37,27 @@
 </template>
 
 <script>
+    import SixNezService from "../SixNezService";
+
     export default {
         name: "Login",
+        mounted ()  {
+            if (SixNezService.hasValidToken()) {
+                this.$router.push("/");
+            }
+        },
         data: () => ({
             hasErrors: false,
-            identifiant: null
+            identifiant: null,
+            password: null
         }),
-        computed: {
-            hasErrorsClass () {
-                return {
-                    'md-invalid': this.hasErrors
+        methods: {
+            async validate() {
+                var response = await SixNezService.connect(this.identifiant, this.password);
+                if (response == true) {
+                    this.$router.push("/home");
+                } else if (response == "400") {
+                    alert("Identifiant ou mot de passe incorrect");
                 }
             }
         }
@@ -109,5 +120,9 @@
 
     #button_creer:hover, #button_valider:hover {
         width: 20%;
+    }
+
+    .md-primary {
+        background: none !important;
     }
 </style>

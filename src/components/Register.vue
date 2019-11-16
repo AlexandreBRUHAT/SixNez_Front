@@ -12,8 +12,9 @@
                     Identifiant
                 </md-content>
 
-                <md-field id="field_identifiant" class="md-theme-default" :class="checkCharacters">
-                    <md-input id="input_identifiant" type="text" v-model="identifiant" required />
+                <md-field id="field_identifiant" class="md-theme-default" :class="getError != null ? 'md-invalid' : null">
+                    <md-input id="input_identifiant" type="text" v-model="identifiant" @input="identifiant_changed" required />
+                    <span class="md-error">{{ getError }}</span>
                 </md-field>
 
                 <md-content id="content_password" class="md-title md-primary">
@@ -35,7 +36,7 @@
 
             <div id="div_buttons">
                 <md-button id="button_valider" :disabled="!checkPasswords" @click="validate">
-                    <md-content id="content_valider" class="md-primary">Créer compte</md-content>
+                    <md-content class="md-primary">Créer compte</md-content>
                 </md-button>
             </div>
 
@@ -52,7 +53,8 @@
             identifiant: null,
             password1: null,
             password2: null,
-            regex: new RegExp("[^a-zA-Z0-9]")
+            regex: new RegExp("[^a-zA-Z0-9]"),
+            identifiantExists: null
         }),
         computed: {
             checkPasswords () {
@@ -63,21 +65,30 @@
                 return this.password1 == this.password2;
             },
             checkCharacters () {
-                return {
-                    'md-invalid' : this.regex.test(this.identifiant)
-                }
+                return this.regex.test(this.identifiant);
+            },
+            getError() {
+                if (this.checkCharacters) return "Caractère non autorisé";
+                else if (this.identifiantExists) return "Identifiant déjà utilisé";
+                return null;
             }
+
         },
         methods: {
-            validate () {
+            async validate () {
                 if (!this.checkPasswords) return;
-                if (this.regex.test(this.identifiant)) return;
+                if (this.checkCharacters) return;
 
-                if (SixNezService.register(this.identifiant, this.password1)) {
-                    console.log("OK");
-                } else {
-                    console.log("OK");
+                var response = await SixNezService.register(this.identifiant, this.password1);
+                if (response == true) {
+                    this.$router.push("/login");
+                } else if (response == "400") {
+                    // identifiant deja utilise
+                    this.identifiantExists = true;
                 }
+            },
+            identifiant_changed () {
+                if (this.identifiantExists == true) this.identifiantExists = false;
             }
         }
     }
@@ -118,6 +129,7 @@
     #field_identifiant, #field_password, #field_password_confirmation {
         width: 30%;
         margin: auto;
+        margin-bottom: 20px;
     }
 
     #input_identifiant, #input_password, #input_password_confirmation {
@@ -137,8 +149,8 @@
         width: 18%;
     }
 
-    #content_valider, #content_creation, #content_identifiant, #content_password, #content_password_confirmation {
-        background: none;
+    .md-primary {
+        background: none !important;
     }
 
     #button_valider:hover {
