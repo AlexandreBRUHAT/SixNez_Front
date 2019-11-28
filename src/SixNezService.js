@@ -2,7 +2,8 @@ import axios from "axios";
 import {sha256} from "js-sha256";
 import Vue from 'vue'
 
-axios.defaults.headers.common['Access-Control-Allow-Origin'] = "*"
+axios.defaults.headers.common['Access-Control-Allow-Origin'] = "*";
+//axios.defaults.headers.common['']
 axios.defaults.baseURL = "http://localhost:8080";
 
 const SixNezService = {
@@ -65,6 +66,45 @@ const SixNezService = {
             window.localStorage.removeItem("token");
             Vue.prototype.$bus.$emit("disconnected");
         }
+    },
+
+    async getFilms(pageNumber, count) {
+        var pageDTO = JSON.stringify({
+            'pageNumber': pageNumber,
+            'pageSize': count
+        });
+
+        return await axios({
+            method: "GET",
+            url: "/films",
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token"),
+                'Content-Type': 'application/json'
+            },
+            params: {
+                page: pageDTO
+            }
+        }).then(response => {
+            console.log(response);
+        }, error => {
+            console.log(error);
+        });
+    },
+
+    async getFilm(id) {
+        return await axios({
+            method: "GET",
+            url: "/films/" + id,
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            }
+        }).then(response => {
+            console.log(response);
+            return response.data;
+        }, error => {
+            console.log(error);
+            return null;
+        });
     }
 
 };

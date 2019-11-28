@@ -1,5 +1,9 @@
 <template>
-    <div></div>
+    <div>
+        <span class="md-display-2 md-centered">
+            Bienvenue sur le site SixNez !
+        </span>
+    </div>
 </template>
 
 <script>

@@ -15,21 +15,38 @@
         </div>
 
         <div id="div_containing_cards">
-            <md-card md-with-hover v-for="film in films" v-bind:key="film.titre" class="div_card">
-                <md-card-header class="div_card_header">
-                    <div class="md-title div_titre">{{ film.titre }}</div>
-                    <div class="md-subhead div_annee">{{ film.annee }}</div>
-                </md-card-header>
-            </md-card>
+            <div v-for="film in films" v-bind:key="film.id" @click="$router.push({ name: 'film', params: { id: film.id }})" class="div_card">
+                <md-card md-with-hover>
+                    <md-button class="md-icon-button md-list-action" @click="console.log('a')">
+                        <md-icon class="md-primary">star</md-icon>
+                    </md-button>
+
+                    <md-ripple>
+                        <md-card-header>
+                            <md-content class="md-title div_titre">{{ film.titre }}</md-content>
+                            <md-content class="md-subhead div_annee">{{ film.annee }}</md-content>
+                        </md-card-header>
+
+                        <md-card-content>
+                            <img v-bind:src="film.img">
+                        </md-card-content>
+                    </md-ripple>
+                </md-card>
+            </div>
         </div>
     </div>
 </template>
 
 <script>
+    //import SixNezService from "../SixNezService";
+
     export default {
         name: "Films",
+        mounted () {
+            //SixNezService.getFilms(0, 20);
+        },
         data: () => ({
-            films: [{ titre: "aa", annee: 2001}, {titre: "bb", annee: 2015},{ titre: "aa", annee: 2001}, {titre: "bb", annee: 2015},{ titre: "aa", annee: 2001}, {titre: "bb", annee: 2015},{ titre: "aa", annee: 2001}, {titre: "bb", annee: 2015},{ titre: "aa", annee: 2001}, {titre: "bb", annee: 2015}]
+            films: [{ titre: "Frozen II", annee: "2018", id: "tt4520988", img: "https://m.media-amazon.com/images/M/MV5BMjA0YjYyZGMtN2U0Ni00YmY4LWJkZTItYTMyMjY3NGYyMTJkXkEyXkFqcGdeQXVyNDg4NjY5OTQ@._V1_SY1000_SX675_AL_.jpg" }]
         })
     }
 </script>
@@ -73,7 +90,6 @@
 
     .div_card {
         width: 15%;
-        padding-top: 10%;
 
         position: relative;
 

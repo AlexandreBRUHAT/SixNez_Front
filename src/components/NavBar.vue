@@ -18,6 +18,9 @@
                     <!-- le "to" sans rien evite un warning, mais il est inutil ici -->
                     <md-button class="md-accent" @click="disconnect" to v-if="isConnected">
                         Se déconnecter
+                        <i class="material-icons" id="icon_deconnexion">
+                            exit_to_app
+                        </i>
                     </md-button>
                 </div>
             </div>
@@ -66,5 +69,9 @@
         position: sticky;
         top: 0px;
         z-index: 1000;
+    }
+
+    #icon_deconnexion {
+        vertical-align: middle;
     }
 </style>
