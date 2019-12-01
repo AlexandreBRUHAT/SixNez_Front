@@ -1,6 +1,6 @@
 import axios from "axios";
 import {sha256} from "js-sha256";
-import Vue from 'vue'
+import Vue from 'vue';
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = "*";
 //axios.defaults.headers.common['']
@@ -68,12 +68,7 @@ const SixNezService = {
         }
     },
 
-    async getFilms(pageNumber, count) {
-        var pageDTO = JSON.stringify({
-            'pageNumber': pageNumber,
-            'pageSize': count
-        });
-
+    async getFilms(pageNumber, count, category = null, titre = null) {
         return await axios({
             method: "GET",
             url: "/films",
@@ -82,12 +77,17 @@ const SixNezService = {
                 'Content-Type': 'application/json'
             },
             params: {
-                page: pageDTO
+                'page': pageNumber,
+                'size': count,
+                'genre': category,
+                'like': titre
             }
         }).then(response => {
-            console.log(response);
+            //console.log(response);
+            return response.data;
         }, error => {
             console.log(error);
+            return null;
         });
     },
 
@@ -99,12 +99,45 @@ const SixNezService = {
                 'Authorization': "Bearer " + window.localStorage.getItem("token")
             }
         }).then(response => {
-            console.log(response);
+            //console.log(response);
             return response.data;
         }, error => {
             console.log(error);
             return null;
         });
+    },
+
+    async getPictures(ids) {
+        return await axios({
+            method: "PATCH",
+            url: "/pictures",
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            },
+            data: ids
+        }).then(response => {
+            //console.log(response);
+            return response.data;
+        }, error => {
+            console.log(error);
+            return null;
+        })
+    },
+
+    async getGenres() {
+        return await axios({
+            method: "GET",
+            url: "/genres",
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            }
+        }).then(response => {
+            //console.log(response);
+            return response.data;
+        }, error => {
+          console.log(error);
+          return null;
+        })
     }
 
 };

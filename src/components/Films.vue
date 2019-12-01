@@ -1,126 +1,200 @@
 <template>
     <div>
-        <div id="div_filters">
-            <md-button class="filter_button">
-                <md-content class="md-primary filter_button_content">Filtre1</md-content>
+        <md-toolbar id="toolbar_filters" class="md-layout md-gutter md-alignment-center md-primary">
+            <md-button id="bouton_precedent" @click="previousPage" :style="{visibility: this.currentPage == 0 ? 'hidden' : 'visible'}" class="md-layout-item">
+                Précédent
             </md-button>
 
-            <md-button class="filter_button">
-                <md-content class="md-primary filter_button_content">Filtre2</md-content>
+            <md-field id="field_category" class="md-layout-item">
+                <label>Catégorie</label>
+                <md-select v-model="category" id="select_category">
+                    <md-option value="none">Toutes</md-option>
+
+                    <md-option v-for="genre in genres" :key="genre" :value="genre">{{ genre }}</md-option>
+                </md-select>
+            </md-field>
+
+            <md-field class="md-layout-item">
+                <label>Titre</label>
+                <md-input v-model="titre" v-on:change="onTitre" />
+            </md-field>
+
+            <md-button id="bouton_suivant" @click="nextPage" :style="{visibility: hasMoreMovies ? 'visible' : 'hidden'}" class="md-layout-item">
+                Suivant
             </md-button>
+        </md-toolbar>
 
-            <md-button class="filter_button">
-                <md-content class="md-primary filter_button_content">Filtre3</md-content>
-            </md-button>
-        </div>
-
-        <div id="div_containing_cards">
-            <div v-for="film in films" v-bind:key="film.id" @click="$router.push({ name: 'film', params: { id: film.id }})" class="div_card">
-                <md-card md-with-hover>
-                    <md-button class="md-icon-button md-list-action" @click="console.log('a')">
-                        <md-icon class="md-primary">star</md-icon>
-                    </md-button>
-
+        <md-content id="div_containing_cards" class="md-scrollbar">
+            <div v-for="film in getFilms" v-bind:key="film.id" @click="$router.push({ name: 'film', params: { id: film.id }})" class="div_film">
+                <md-card md-with-hover class="card_film">
                     <md-ripple>
+                        <div class="button_favourite">
+                            <md-button class="md-icon-button md-list-action" @click="favourite($event, film.id)">
+                                <md-icon class="md-primary" v-if="false">star</md-icon> <!-- TODO -->
+                                <md-icon class="md-primary" v-if="true">star_border</md-icon>
+                            </md-button>
+                        </div>
+
                         <md-card-header>
-                            <md-content class="md-title div_titre">{{ film.titre }}</md-content>
+                            <md-content class="md-title div_titre">{{ film.name }}</md-content>
                             <md-content class="md-subhead div_annee">{{ film.annee }}</md-content>
                         </md-card-header>
 
-                        <md-card-content>
-                            <img v-bind:src="film.img">
+                        <md-card-content id="card_content_img">
+                            <md-progress-spinner class="md-accent" :md-diameter="80" :md-stroke="8" md-mode="indeterminate" v-if="film.imgURL == null" />
+                            <img v-bind:src="film.imgURL" v-if="film.imgURL != null && film.imgURL != ''">
+                            <img src="../assets/no_img.png" v-if="film.imgURL != null && film.imgURL == ''">
                         </md-card-content>
                     </md-ripple>
                 </md-card>
             </div>
-        </div>
+        </md-content>
     </div>
 </template>
 
 <script>
-    //import SixNezService from "../SixNezService";
+    import SixNezService from "../SixNezService";
+
+    const PAGE_SIZE = 28;
 
     export default {
         name: "Films",
-        mounted () {
-            //SixNezService.getFilms(0, 20);
+        async mounted () {
+            this.updatePage();
+
+            this.genres = await this.updateGenres();
         },
         data: () => ({
-            films: [{ titre: "Frozen II", annee: "2018", id: "tt4520988", img: "https://m.media-amazon.com/images/M/MV5BMjA0YjYyZGMtN2U0Ni00YmY4LWJkZTItYTMyMjY3NGYyMTJkXkEyXkFqcGdeQXVyNDg4NjY5OTQ@._V1_SY1000_SX675_AL_.jpg" }]
-        })
+            films: null,
+            genres: [],
+            currentPage: 0,
+            nextMovie: null,
+            category: null,
+            titre: null
+        }),
+        methods: {
+            favourite(event, id) {
+                event.stopPropagation();
+
+                console.log(id);
+            },
+
+            async nextPage() {
+                this.currentPage++;
+            },
+
+            async previousPage() {
+                this.currentPage--;
+            },
+
+            async updatePage() {
+                this.films = await SixNezService.getFilms(this.currentPage, PAGE_SIZE, this.category, this.titre);
+                this.nextMovie = await SixNezService.getFilms((this.currentPage + 1) * PAGE_SIZE, 1, this.category, this.titre);
+
+                let ids = [];
+                this.films.forEach(film => {
+                    ids.push({ id: film.id });
+                });
+
+                let pictures = await SixNezService.getPictures(ids);
+                pictures.forEach(picture => {
+                    this.films.forEach(film => {
+                        if (film.id == picture.id) {
+                            film.imgURL = picture.imgURL;
+                        }
+                    });
+                })
+            },
+
+            async updateGenres() {
+                return await SixNezService.getGenres();
+            },
+
+            onTitre() {
+                this.updatePage();
+            }
+        },
+        computed: {
+            getFilms() {
+                return this.films;
+            },
+
+            hasMoreMovies() {
+                return this.nextMovie != null && this.nextMovie.length > 0;
+            }
+        },
+        watch: {
+            currentPage: async function () {
+                this.updatePage();
+            },
+
+            category: function () {
+                if (this.category === "none") {
+                    this.category = null;
+                }
+
+                if (this.currentPage == 0) this.updatePage();
+                else this.currentPage = 0;
+            }
+        }
     }
 </script>
 
 <style scoped lang="scss">
     @import "../styles/global";
 
-    #div_filters {
-        width: 100%;
-        background: fade_out($color-primary, 0.2);
+    #toolbar_filters {
+        width: 94%;
 
-        border-bottom-width: 10px;
-        border-bottom-style: solid;
-        border-bottom-color: $color-primary;
-
-        position: sticky;
+        position: fixed;
         margin-top: 0%;
+        margin-left: 3%;
+        z-index: 5;
 
-        padding-top: 10px;
-        padding-bottom: 10px;
-        padding-left: 5%;
-        padding-right: 5%;
-        text-align: center;
+        //background-color: $color-primary;
     }
 
-    .filter_button {
-        width: 16%;
-        margin-left: 5%;
-        margin-right: 5%;
-    }
-
-    .md-primary {
-        background: none !important;
+    .md-layout-item {
+        margin-left: 2%;
+        margin-right: 2%;
     }
 
     #div_containing_cards {
-        padding-top: 1%;
-        margin-left: 2.5%;
-        margin-right: 2.5%;
+        padding-top: 7%;
+        padding-left: 2.5%;
+        padding-right: 2.5%;
     }
 
-    .div_card {
-        width: 15%;
+    .div_film {
+        width: 20%;
 
-        position: relative;
-
-        margin-left: 5%;
-        margin-right: 5%;
+        margin-left: 2.5%;
+        margin-right: 2.5%;
         margin-bottom: 5%;
 
-        display: inline-block;
+        display: inline-table;
+        vertical-align: middle;
 
-        border-color: fade_out($color-primary, 0.8);
+        border-color: fade_out($color-secondary, 0.8);
         border-style: inset;
         border-width: 4px;
     }
 
-    .div_card_header {
-
+    .card_film {
+        display: table-cell;
+        vertical-align: middle;
+        height: 100%;
     }
 
     .div_card:hover {
-
-        /*border-left-color: $color-primary;
-        border-right-color: $color-primary;
-        border-left-style: solid;
-        border-right-style: solid;
-        border-left-width: 1px;
-        border-right-width: 1px;*/
-
-        border-color: fade_out($color-primary, 0.2);
+        border-color: fade_out($color-secondary, 0.2);
     }
 
-    .div_titre, .div_annee {
+    .div_titre, .div_annee, #card_content_img {
         text-align: center;
+    }
+
+    .button_favourite {
+        text-align: right;
     }
 </style>

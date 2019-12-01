@@ -7,16 +7,16 @@
                 </div>
 
                 <div class="md-toolbar-section-end">
-                    <md-button class="md-accent" to="/login" v-if="!isConnected">
+                    <md-button to="/login" v-if="!isConnected">
                         Se connecter
                     </md-button>
 
-                    <md-button class="md-accent" to="/register" v-if="!isConnected">
+                    <md-button to="/register" v-if="!isConnected">
                         Créer un compte
                     </md-button>
 
                     <!-- le "to" sans rien evite un warning, mais il est inutil ici -->
-                    <md-button class="md-accent" @click="disconnect" to v-if="isConnected">
+                    <md-button @click="disconnect" to v-if="isConnected">
                         Se déconnecter
                         <i class="material-icons" id="icon_deconnexion">
                             exit_to_app
@@ -68,7 +68,7 @@
     #navbar {
         position: sticky;
         top: 0px;
-        z-index: 1000;
+        z-index: 10;
     }
 
     #icon_deconnexion {
