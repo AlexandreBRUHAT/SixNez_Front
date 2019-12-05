@@ -43,7 +43,7 @@
         data: () => ({
             isConnected: SixNezService.hasToken()
         }),
-        async created () {
+        async mounted () {
             this.$bus.$on("connected", () => {
                 this.isConnected = true;
             });
@@ -52,7 +52,9 @@
                 this.isConnected = false;
             });
 
-            await SixNezService.forceCheckToken();
+            if (!await SixNezService.forceCheckToken()) {
+                this.isConnected = false;
+            }
         },
         methods: {
             disconnect () {

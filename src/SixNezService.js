@@ -76,8 +76,7 @@ const SixNezService = {
                 return false;
             } else return true;
         }).catch(error => {
-            console.log(error.response);
-            if (error.status == 403) {
+            if (error.status == undefined || error.status == 403) {
                 window.localStorage.removeItem("token")
                 return false
             } else return true;
@@ -214,6 +213,42 @@ const SixNezService = {
         }, error => {
             console.log(error);
             return null;
+        });
+    },
+
+    async addFavourite(id) {
+        return await axios({
+            method: "POST",
+            url: "/favs",
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            },
+            data: {
+                id: id
+            }
+        }).then(() => {
+            return true;
+        }, error => {
+            console.log(error);
+            return false;
+        });
+    },
+
+    async removeFavourite(id) {
+        return await axios({
+            method: "DETELE",
+            url: "/favs",
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            },
+            data: {
+                id: id
+            }
+        }).then(() => {
+            return true;
+        }, error => {
+            console.log(error);
+            return false;
         });
     }
 

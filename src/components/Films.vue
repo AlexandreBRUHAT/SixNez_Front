@@ -16,7 +16,7 @@
 
             <md-field class="md-layout-item">
                 <label class="md-theme-default">Titre</label>
-                <md-input v-model="titre" v-on:change="onTitre" />
+                <md-input v-model="titre" v-on:change="onTitre" class="md-accent" />
             </md-field>
 
             <md-button id="bouton_suivant" @click="currentPage++" :style="{visibility: nextMovie != null ? 'visible' : 'hidden'}" class="md-layout-item">
@@ -57,12 +57,6 @@
             isLoading: false
         }),
         methods: {
-            favourite(event, id) {
-                event.stopPropagation();
-
-                console.log(id);
-            },
-
             async updatePage() {
                 this.isLoading = true;
                 this.nextMovie = null;

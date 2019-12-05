@@ -4,8 +4,8 @@
             <md-ripple>
                 <div class="button_favourite">
                     <md-button class="md-icon-button md-list-action" @click="favourite($event, film.id)">
-                        <md-icon class="md-primary" v-if="false">star</md-icon> <!-- TODO -->
-                        <md-icon class="md-primary" v-if="true">star_border</md-icon>
+                        <md-icon class="etoile" v-if="film.fav">star</md-icon> <!-- TODO -->
+                        <md-icon class="etoile" v-if="!film.fav">star_border</md-icon>
                     </md-button>
                 </div>
 
@@ -25,12 +25,27 @@
 </template>
 
 <script>
+    import SixNezService from "../SixNezService";
+
     export default {
         name: "FilmCard",
         props: {
             film: {
                 type: Object,
                 required: true
+            }
+        },
+        methods: {
+            favourite(event, id) {
+                event.stopPropagation();
+
+                if (this.film.fav) {
+                    SixNezService.removeFavourite(id);
+                    this.film.fav = false;
+                } else {
+                    SixNezService.addFavourite(id);
+                    this.film.fav = true;
+                }
             }
         }
     }
@@ -70,6 +85,10 @@
 
     .button_favourite {
         text-align: right;
+    }
+
+    .etoile {
+        color: #f8a412 !important;
     }
 
 </style>
