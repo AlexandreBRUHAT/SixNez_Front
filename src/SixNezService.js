@@ -53,12 +53,35 @@ const SixNezService = {
         });
     },
 
-    hasValidToken() {
+    hasToken() {
         var token = window.localStorage.getItem("token");
         if (token == null) return false;
-        // TODO tester si token valide
 
         return true;
+    },
+
+    async forceCheckToken() {
+        var token = window.localStorage.getItem("token");
+        if (token == null) return false;
+
+        return await axios({
+            method: "GET",
+            url: "/film",
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token"),
+            }
+        }).then(result => {
+            if (result.status == 403) {
+                window.localStorage.removeItem("token")
+                return false;
+            } else return true;
+        }).catch(error => {
+            console.log(error.response);
+            if (error.status == 403) {
+                window.localStorage.removeItem("token")
+                return false
+            } else return true;
+        });
     },
 
     disconnect() {
@@ -121,7 +144,7 @@ const SixNezService = {
         }, error => {
             console.log(error);
             return null;
-        })
+        });
     },
 
     async getGenres() {
@@ -137,7 +160,61 @@ const SixNezService = {
         }, error => {
           console.log(error);
           return null;
-        })
+        });
+    },
+
+    async getActor(id) {
+        return await axios({
+            method: "GET",
+            url: "/acteurs/" + id,
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            }
+        }).then(response => {
+            return response.data;
+        }, error => {
+            console.log(error);
+            return null;
+        });
+    },
+
+    async getActors(pageNumber, count, metier = null) {
+        return await axios({
+            method: "GET",
+            url: "/acteurs",
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            },
+            params: {
+                page: pageNumber,
+                size: count,
+                metier: metier
+            }
+        }).then(response => {
+            return response.data;
+        }, error => {
+            console.log(error);
+            return null;
+        });
+    },
+
+    async getFavourites(pageNumber, count) {
+        return await axios({
+            method: "GET",
+            url: "/favs",
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            },
+            params: {
+                page: pageNumber,
+                size: count
+            }
+        }).then(response => {
+            return response.data;
+        }, error => {
+            console.log(error);
+            return null;
+        });
     }
 
 };

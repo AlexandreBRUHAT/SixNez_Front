@@ -18,18 +18,17 @@
                     <!-- le "to" sans rien evite un warning, mais il est inutil ici -->
                     <md-button @click="disconnect" to v-if="isConnected">
                         Se déconnecter
-                        <i class="material-icons" id="icon_deconnexion">
-                            exit_to_app
-                        </i>
+                        <i class="material-icons" id="icon_deconnexion">exit_to_app</i>
                     </md-button>
                 </div>
             </div>
 
             <div class="md-toolbar-row" v-if="isConnected">
                 <md-tabs class="md-primary" md-sync-route>
-                    <md-tab id="tab-home" md-label="Accueil" class="md-accent" to="/home" exact/>
-                    <md-tab id="tab-films" md-label="Films" class="md-accent" to="/films" />
-                    <md-tab id="tab-acteurs" md-label="Acteurs" class="md-accent" to="/acteurs" />
+                    <md-tab md-label="Accueil" class="md-accent" to="/home" exact/>
+                    <md-tab md-label="Films" class="md-accent" to="/films" />
+                    <md-tab md-label="Acteurs" class="md-accent" to="/acteurs" />
+                    <md-tab md-label="Favoris" class="md-accent" to="/favoris" />
                 </md-tabs>
             </div>
         </md-toolbar>
@@ -42,21 +41,22 @@
     export default {
         name: "NavBar",
         data: () => ({
-            isConnected: SixNezService.hasValidToken()
+            isConnected: SixNezService.hasToken()
         }),
-        created () {
+        async created () {
             this.$bus.$on("connected", () => {
                 this.isConnected = true;
             });
 
             this.$bus.$on("disconnected", () => {
                 this.isConnected = false;
-            })
+            });
+
+            await SixNezService.forceCheckToken();
         },
         methods: {
             disconnect () {
                 SixNezService.disconnect();
-                this.$router.push("/home");
             }
         }
     }

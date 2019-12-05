@@ -1,5 +1,5 @@
-$color-primary: #923101;
-$color-secondary: #f7c375;
+$color-primary: #65000b;
+$color-secondary: #f8a412;
 $color-white: #fffffa;
 $color-black: #100007;
 
@@ -7,10 +7,7 @@ $color-black: #100007;
 
 @include md-register-theme("default", (
         primary: $color-primary,
-        accent: $color-secondary,
-        background: $color-white,
-        toolbarvariant: $color-secondary,
-        text-primary-on-background-variant: $color-secondary
+        accent: $color-secondary
 ));
 
 @import "~vue-material/dist/theme/all";

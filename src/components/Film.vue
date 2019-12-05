@@ -6,6 +6,8 @@
 
         <div v-if="film != null" id="div_contenu">
             <md-content id="content_image" class="md-elevation-8 md-primary">
+                <span class="helper" />
+
                 <img v-if="film.imgURL != null && film.imgURL != ''" v-bind:src="film.imgURL">
                 <img v-if="film.imgURL == null || film.imgURL == ''" src="../assets/no_img.png">
             </md-content>
@@ -30,13 +32,18 @@
                     </md-card-header>
                 </md-card>
 
-                <div v-for="acteur in film.acteurs" v-bind:key="acteur.id" class="div_acteur">
+                <div v-for="acteur in film.acteurs" v-bind:key="acteur.id" @click="$router.push({ name: 'acteur', params: { id: acteur.id }})" class="div_acteur">
                     <md-card md-with-hover class="md-accent card_acteur">
-                        <md-card-content>
-                            <md-content class="md-title md-accent">{{ acteur.nomPrenom }}</md-content>
+                        <md-ripple>
+                            <md-card-content>
+                                <span class="helper" />
+                                <md-content class="md-title md-accent">{{ acteur.nomPrenom }}</md-content>
 
-                            <md-content v-for="met in acteur.metier" v-bind:key="met" class="md-subhead md-accent">{{ translateJob(met) }}</md-content>
-                        </md-card-content>
+                                <span class="helper" />
+
+                                <md-content v-for="met in acteur.metier" v-bind:key="met" class="md-subhead md-accent">{{ translateJob(met) }}</md-content>
+                            </md-card-content>
+                        </md-ripple>
                     </md-card>
                 </div>
         </div>
@@ -91,6 +98,12 @@
         text-align: center;
     }
 
+    .helper {
+        display: inline-block;
+        height: 100%;
+        vertical-align: middle;
+    }
+
     #content_image {
         display: inline-block;
 
@@ -105,6 +118,8 @@
     img {
         width: 100%;
         display: inline-block;
+
+        vertical-align: middle;
     }
 
     #card_texte {
@@ -136,8 +151,6 @@
 
     .card_acteur {
         height: 100%;
-        display: table-cell;
-        vertical-align: middle;
     }
 
 </style>

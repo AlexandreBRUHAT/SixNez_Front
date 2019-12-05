@@ -1,38 +1,50 @@
 <template>
     <div>
-        <div id="div_titre">
-            <md-content class="md-title md-primary">
-                Connexion
-            </md-content>
-        </div>
+        <md-card class="card_main md-primary">
+            <md-card-header>
+                <md-content class="md-display-1 md-primary">
+                    Connexion
+                </md-content>
+            </md-card-header>
+        </md-card>
 
-        <div id="div_form">
-            <md-content id="content_identifiant" class="md-title md-primary">
-                Identifiant
-            </md-content>
+        <md-card class="card_main md-accent">
+            <md-card-content>
+                <md-content class="md-title md-accent">
+                    Identifiant
+                </md-content>
 
-            <md-field id="field_identifiant" class="md-theme-default">
-                <md-input v-model="identifiant" id="input_identifiant" type="text" required />
-            </md-field>
+                <md-field class="md-accent">
+                    <md-input v-model="identifiant" class="input md-primary" type="text" required />
+                </md-field>
 
-            <md-content id="content_password" class="md-title md-primary">
-                Mot de passe
-            </md-content>
+                <md-content class="md-title md-accent">
+                    Mot de passe
+                </md-content>
 
-            <md-field id="field_password">
-                <md-input v-model="password" id="input_password" type="password" class="md-primary" required />
-            </md-field>
-        </div>
+                <md-field class="md-accent">
+                    <md-input v-model="password" class="input md-primary" type="password" required />
+                </md-field>
+            </md-card-content>
+        </md-card>
 
         <div id="div_buttons">
-            <md-button id="button_valider" @click="validate">
-                <md-content class="md-primary">Se connecter</md-content>
+            <md-button class="md-primary md-raised buttons" @click="validate" :disabled="identifiant === '' || password === ''" >
+                Se connecter
             </md-button>
 
-            <md-button id="button_creer" @click="$router.push('/register')">
-                <md-content class="md-primary">Créer un compte</md-content>
+            <md-button class="md-primary md-raised buttons" @click="$router.push('/register')">
+                Créer un compte
             </md-button>
         </div>
+
+        <div id="div_loading" v-if="isLoading">
+            <md-progress-bar class="md-accent" md-mode="indeterminate"></md-progress-bar>
+        </div>
+
+        <md-snackbar md-position="center" :md-duration="3000" :md-active.sync="showSnackBar">
+            <span>Mot de passe ou identifiant incorrect</span>
+        </md-snackbar>
     </div>
 </template>
 
@@ -42,23 +54,28 @@
     export default {
         name: "Login",
         mounted ()  {
-            if (SixNezService.hasValidToken()) {
+            if (SixNezService.hasToken()) {
                 this.$router.push("/");
             }
         },
         data: () => ({
-            hasErrors: false,
-            identifiant: null,
-            password: null
+            identifiant: "",
+            password: "",
+            showSnackBar: false,
+            isLoading: false
         }),
         methods: {
             async validate() {
+                this.isLoading = true;
+
                 var response = await SixNezService.connect(this.identifiant, this.password);
                 if (response == true) {
                     this.$router.push("/home");
                 } else if (response == "400") {
-                    alert("Identifiant ou mot de passe incorrect");
+                    this.showSnackBar = true;
                 }
+
+                this.isLoading = false;
             }
         }
     }
@@ -67,62 +84,24 @@
 <style scoped lang="scss">
     @import "../styles/global.scss";
 
-    #div_titre, #div_form, #button_valider, #button_creer {
-        border-radius: 15px;
-        border-style: none;
-        box-shadow: 3px 3px 3px gray;
+    .card_main, #div_buttons {
+        text-align: center;
+        margin: 3% auto;
 
-        background-color: $color-primary;
+        width: 50%;
+    }
 
+    .input {
         text-align: center;
     }
 
-    #div_titre, #div_form {
-        margin-left: 25%;
-        margin-right: 25%;
-        padding-top: 1%;
-        padding-bottom: 1%;
+    .buttons {
+        width: 40%;
     }
 
-    #div_titre {
-        margin-top: 5%;
-    }
-
-    #content_identifiant, #content_password {
-        margin-top: 1%;
-    }
-
-    #div_form {
-        margin-top: 2%;
-    }
-
-    #field_identifiant, #field_password {
-        width: 30%;
+    #div_loading {
+        width: 40%;
+        text-align: center;
         margin: auto;
-    }
-
-    #input_identifiant, #input_password {
-        width: 100%;
-        text-align: center;
-    }
-
-    #div_buttons {
-        text-align: center;
-        margin-top: 5%;
-    }
-
-    #button_creer, #button_valider {
-        margin-left: 40%;
-        margin-right: 40%;
-
-        width: 18%;
-    }
-
-    #button_creer:hover, #button_valider:hover {
-        width: 20%;
-    }
-
-    .md-primary {
-        background: none !important;
     }
 </style>
