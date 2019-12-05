@@ -16,12 +16,7 @@ Vue.use(VueMaterial);
 Vue.use(VueRouter);
 Vue.prototype.$bus = EventBus;
 
-const router = new VueRouter({
-  routes: Routes,
-  mode: 'history'
-});
-
 new Vue({
   render: h => h(App),
-  router: router
+  router: Routes
 }).$mount('#app')

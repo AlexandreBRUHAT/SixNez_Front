@@ -68,15 +68,10 @@ const SixNezService = {
             method: "GET",
             url: "/film",
             headers: {
-                'Authorization': "Bearer " + window.localStorage.getItem("token"),
+                'Authorization': "Bearer " + token,
             }
-        }).then(result => {
-            if (result.status == 403) {
-                window.localStorage.removeItem("token")
-                return false;
-            } else return true;
         }).catch(error => {
-            if (error.status == undefined || error.status == 403) {
+            if (error == undefined || error.message === "Network Error") {
                 window.localStorage.removeItem("token")
                 return false
             } else return true;

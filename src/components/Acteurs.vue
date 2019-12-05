@@ -24,9 +24,9 @@
         <div v-if="!isLoading" id="div_acteurs">
             <div v-for="acteur in acteurs" :key="acteur.id" class="div_acteur" @click="$router.push({ name: 'acteur', params: { id: acteur.id }})">
                 <md-card class="md-accent" md-with-hover>
-                    <md-card-header>
-                        <md-content class="md-accent">{{ acteur.nomPrenom }}</md-content>
-                    </md-card-header>
+                    <md-ripple>
+                        <md-content class="md-accent content_acteur">{{ acteur.nomPrenom }}</md-content>
+                    </md-ripple>
                 </md-card>
             </div>
         </div>
@@ -112,6 +112,11 @@
 
         margin-left: 1%;
         margin-right: 1%;
+    }
+
+    .content_acteur {
+        padding-top: 3%;
+        padding-bottom: 3%;
     }
 
 </style>
