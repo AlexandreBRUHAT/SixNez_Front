@@ -10,7 +10,7 @@
                 <md-select v-model="job" id="select_category">
                     <md-option value="none">Tous</md-option>
 
-                    <md-option v-for="j in job" :key="j" :value="j">{{ j }}</md-option>
+                    <md-option v-for="j in jobs" :key="j" :value="j">{{ translateJob(j) }}</md-option>
                 </md-select>
             </md-field>
 
@@ -36,6 +36,7 @@
 <script>
     import SpinnerLoader from "./SpinnerLoader";
     import SixNezService from "../SixNezService";
+    import TraductionService from "../TraductionService";
 
     const PAGE_SIZE = 42;
 
@@ -44,9 +45,12 @@
         components: {SpinnerLoader},
         async mounted () {
             this.updatePage();
+
+            this.jobs = await SixNezService.getMetiers();
         },
         data: () => ({
             acteurs: null,
+            jobs: [],
             job: null,
             currentPage: 0,
             isLoading: false,
@@ -62,6 +66,10 @@
 
                 this.isLoading = false;
             },
+
+            translateJob(job) {
+                return TraductionService.translateJobs(job);
+            }
         },
         watch: {
             currentPage: async function () {

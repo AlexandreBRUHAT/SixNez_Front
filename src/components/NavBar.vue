@@ -59,6 +59,8 @@
         methods: {
             disconnect () {
                 SixNezService.disconnect();
+
+                if (this.$router.currentRoute.fullPath != "/home") this.$router.push("/home");
             }
         }
     }

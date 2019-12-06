@@ -157,6 +157,22 @@ const SixNezService = {
         });
     },
 
+    async getMetiers() {
+        return await axios({
+            method: "GET",
+            url: "/metiers",
+            headers: {
+                'Authorization': "Bearer " + window.localStorage.getItem("token")
+            }
+        }).then(response => {
+            //console.log(response);
+            return response.data;
+        }, error => {
+            console.log(error);
+            return null;
+        });
+    },
+
     async getActor(id) {
         return await axios({
             method: "GET",
@@ -231,7 +247,7 @@ const SixNezService = {
 
     async removeFavourite(id) {
         return await axios({
-            method: "DETELE",
+            method: "DELETE",
             url: "/favs",
             headers: {
                 'Authorization': "Bearer " + window.localStorage.getItem("token")

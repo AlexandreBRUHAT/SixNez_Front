@@ -20,6 +20,10 @@
         components: {FilmCard, SpinnerLoader},
         async mounted () {
             this.updatePage();
+
+            this.$bus.$on("removeFavourite", (film) => {
+                this.favoris.splice(this.favoris.indexOf(film), 1);
+            })
         },
         data: () => ({
             favoris: null,

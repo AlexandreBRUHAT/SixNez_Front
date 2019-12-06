@@ -21,11 +21,20 @@
                 </md-card-content>
             </md-ripple>
         </md-card>
+
+        <md-snackbar md-position="center" :md-duration="Infinity" :md-active.sync="showSnackbar">
+            <span>Supprimer des favoris ?</span>
+            <div>
+                <md-button class="md-accent" @click="removeFavourite(film.id)">Oui</md-button>
+                <md-button class="md-accent" @click="showSnackbar = false">Non</md-button>
+            </div>
+        </md-snackbar>
     </div>
 </template>
 
 <script>
     import SixNezService from "../SixNezService";
+    import Vue from 'vue';
 
     export default {
         name: "FilmCard",
@@ -35,17 +44,28 @@
                 required: true
             }
         },
+        data: () => ({
+           showSnackbar: false
+        }),
         methods: {
             favourite(event, id) {
                 event.stopPropagation();
 
                 if (this.film.fav) {
-                    SixNezService.removeFavourite(id);
-                    this.film.fav = false;
+                    this.showSnackbar = true;
                 } else {
                     SixNezService.addFavourite(id);
                     this.film.fav = true;
                 }
+            },
+
+            removeFavourite(id) {
+                this.showSnackbar = false;
+
+                SixNezService.removeFavourite(id);
+                this.film.fav = false;
+
+                Vue.prototype.$bus.$emit("removeFavourite", this.film);
             }
         }
     }

@@ -10,7 +10,7 @@
                 <md-select v-model="category" id="select_category">
                     <md-option value="none">Toutes</md-option>
 
-                    <md-option v-for="genre in genres" :key="genre" :value="genre">{{ genre }}</md-option>
+                    <md-option v-for="genre in genres" :key="genre" :value="genre">{{ translateGenre(genre) }}</md-option>
                 </md-select>
             </md-field>
 
@@ -36,6 +36,7 @@
     import SixNezService from "../SixNezService";
     import SpinnerLoader from "./SpinnerLoader";
     import FilmCard from "./FilmCard";
+    import TraductionService from "../TraductionService";
 
     const PAGE_SIZE = 28;
 
@@ -88,6 +89,10 @@
 
             onTitre() {
                 this.updatePage();
+            },
+
+            translateGenre(genre) {
+                return TraductionService.translateCategorie(genre);
             }
         },
         watch: {
