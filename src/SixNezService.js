@@ -4,7 +4,7 @@ import Vue from 'vue';
 
 axios.defaults.headers.common['Access-Control-Allow-Origin'] = "*";
 //axios.defaults.headers.common['']
-axios.defaults.baseURL = "http://localhost:8080";
+axios.defaults.baseURL = "https://sixnez.herokuapp.com/";
 
 const SixNezService = {
     
