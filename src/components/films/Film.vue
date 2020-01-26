@@ -9,7 +9,7 @@
                 <span class="helper" />
 
                 <img v-if="film.imgURL != null && film.imgURL != ''" v-bind:src="film.imgURL">
-                <img v-if="film.imgURL == null || film.imgURL == ''" src="../assets/no_img.png">
+                <img v-if="film.imgURL == null || film.imgURL == ''" src="../../assets/no_img.png">
             </md-content>
 
             <div id="card_texte">
@@ -52,8 +52,8 @@
 </template>
 
 <script>
-    import SixNezService from "../SixNezService";
-    import TraductionService from "../TraductionService";
+    import SixNezService from "../../services/SixNezService";
+    import TraductionService from "../../services/TraductionService";
 
     export default {
         name: "Film",

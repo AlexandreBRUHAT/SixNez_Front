@@ -36,7 +36,7 @@
 </template>
 
 <script>
-    import SixNezService from "../SixNezService";
+    import SixNezService from "../services/SixNezService";
 
     export default {
         name: "NavBar",

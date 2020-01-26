@@ -9,8 +9,8 @@
 </template>
 
 <script>
-    import SpinnerLoader from "./SpinnerLoader";
-    import SixNezService from "../SixNezService";
+    import SpinnerLoader from "../SpinnerLoader";
+    import SixNezService from "../../services/SixNezService";
     import FilmCard from "./FilmCard";
 
     const PAGE_SIZE = 8;

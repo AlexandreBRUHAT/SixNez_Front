@@ -34,9 +34,9 @@
 </template>
 
 <script>
-    import SpinnerLoader from "./SpinnerLoader";
-    import SixNezService from "../SixNezService";
-    import TraductionService from "../TraductionService";
+    import SpinnerLoader from "../SpinnerLoader";
+    import SixNezService from "../../services/SixNezService";
+    import TraductionService from "../../services/TraductionService";
 
     const PAGE_SIZE = 42;
 

@@ -17,7 +17,7 @@
                 <md-card-content id="card_content_img">
                     <md-progress-spinner class="md-accent" :md-diameter="80" :md-stroke="8" md-mode="indeterminate" v-if="film.imgURL == null" />
                     <img v-bind:src="film.imgURL" v-if="film.imgURL != null && film.imgURL != ''">
-                    <img src="../assets/no_img.png" v-if="film.imgURL != null && film.imgURL == ''">
+                    <img src="../../assets/no_img.png" v-if="film.imgURL != null && film.imgURL == ''">
                 </md-card-content>
             </md-ripple>
         </md-card>
@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import SixNezService from "../SixNezService";
+    import SixNezService from "../../services/SixNezService";
     import Vue from 'vue';
 
     export default {
@@ -72,7 +72,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../styles/global";
+    @import "../../styles/global";
 
     .div_film {
         width: 20%;

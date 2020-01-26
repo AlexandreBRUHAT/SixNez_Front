@@ -1,12 +1,12 @@
 import Home from "./components/Home";
-import Login from "./components/Login";
-import Register from "./components/Register";
-import Films from "./components/Films";
-import Acteurs from "./components/Acteurs";
-import Film from "./components/Film";
-import Acteur from "./components/Acteur";
-import Favoris from "./components/Favoris";
-import SixNezService from "./SixNezService";
+import Login from "./components/auth/Login";
+import Register from "./components/auth/Register";
+import Films from "./components/films/Films";
+import Acteurs from "./components/actors/Acteurs";
+import Film from "./components/films/Film";
+import Acteur from "./components/actors/Acteur";
+import Favoris from "./components/films/Favoris";
+import SixNezService from "./services/SixNezService";
 import VueRouter from "vue-router";
 
 const Routes = new VueRouter({

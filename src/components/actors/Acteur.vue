@@ -59,9 +59,9 @@
 </template>
 
 <script>
-    import SixNezService from "../SixNezService";
-    import TraductionService from "../TraductionService";
-    import SpinnerLoader from "./SpinnerLoader";
+    import SixNezService from "../../services/SixNezService";
+    import TraductionService from "../../services/TraductionService";
+    import SpinnerLoader from "../SpinnerLoader";
 
     export default {
         name: "Acteur",

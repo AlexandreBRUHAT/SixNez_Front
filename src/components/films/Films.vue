@@ -33,10 +33,10 @@
 </template>
 
 <script>
-    import SixNezService from "../SixNezService";
-    import SpinnerLoader from "./SpinnerLoader";
+    import SixNezService from "../../services/SixNezService";
+    import SpinnerLoader from "../SpinnerLoader";
     import FilmCard from "./FilmCard";
-    import TraductionService from "../TraductionService";
+    import TraductionService from "../../services/TraductionService";
 
     const PAGE_SIZE = 28;
 
@@ -113,7 +113,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../styles/global";
+    @import "../../styles/global";
 
     #toolbar_filters {
         width: 94%;

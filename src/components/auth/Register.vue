@@ -52,7 +52,7 @@
 </template>
 
 <script>
-    import SixNezService from "../SixNezService";
+    import SixNezService from "../../services/SixNezService";
 
     export default {
         name: "Register",
@@ -107,7 +107,7 @@
 </script>
 
 <style scoped lang="scss">
-    @import "../styles/global.scss";
+    @import "../../styles/global";
 
     .card_main, #div_buttons {
         text-align: center;
